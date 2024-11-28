@@ -27,5 +27,6 @@
 3. tail.
 
 Все функции эмулятора должны быть покрыты тестами, а для каждой из поддерживаемых команд необходимо написать 2 теста.
-![gif](https://github.com/user-attachments/assets/d234deb2-9ddb-467d-86a4-4392f07cf14a)
+
+https://github.com/user-attachments/assets/a83e22ef-37e8-42ad-9ac8-44a2033447b6
 
