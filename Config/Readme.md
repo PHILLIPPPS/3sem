@@ -28,4 +28,6 @@
 
 Все функции эмулятора должны быть покрыты тестами, а для каждой из поддерживаемых команд необходимо написать 2 теста.
 
-https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2h0anFyeHZyaHI1anljYWdkYjl3cG56Z3UxNGhzZDhocnZwZHZ6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YITvqkRzjBb2KRklUw/giphy-downsized-large.gif
+<div id="header" align="center">
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="100"/>
+</div>
