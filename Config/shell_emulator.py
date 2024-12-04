@@ -17,9 +17,9 @@ class ShellEmulator:
         self.temp_dir.cleanup()
 
     def run_command(self, command):
-        parts = command.split()
-        cmd = parts[0]
-        args = parts[1:]
+        parts = command.split()  # Разделение строки на части
+        cmd = parts[0]  # Первая часть — это команда
+        args = parts[1:]  # Остальные части — аргументы
 
         if cmd == "ls":
             return self.ls(args)
@@ -32,7 +32,7 @@ class ShellEmulator:
         elif cmd == "find":
             return self.find(args)
         elif cmd == "tail":
-            return self.tail(args[0] if args else "")
+            return self.tail(args)  # Передача всех аргументов
         else:
             return "Command not found"
 
@@ -118,18 +118,34 @@ class ShellEmulator:
         matches = [entry for entry in self.archive.namelist() if search_term in entry]
         return "\n".join(matches) if matches else f"No files or directories found matching '{search_term}'"
 
-    def tail(self, path, lines=5):
-        # Формируем полный путь к файлу относительно текущего каталога
+    def tail(self, args):
+
+        if not args:
+            return "Error: tail command requires a file path"
+
+        lines = 10  # Значение по умолчанию
+        path = None
+
+        try:
+            if "-n" in args:
+                n_index = args.index("-n")
+                lines = int(args[n_index + 1])  # Значение после -n
+                path = args[n_index + 2] if len(args) > n_index + 2 else None
+            else:
+                path = args[0]
+        except (ValueError, IndexError):
+            return "Error: invalid usage of -n"
+
+        if path is None:
+            return "Error: no file specified"
+
         file_path = os.path.normpath(os.path.join(self.cwd.strip("/"), path)).strip("/")
 
-        # Проверяем, существует ли файл в архиве
         if file_path not in self.archive.namelist():
             return f"No such file: {path}"
 
-        # Читаем последние строки из файла
         try:
             with self.archive.open(file_path) as f:
-                # Читаем весь файл, а затем берем последние `lines` строк
                 lines_content = f.readlines()[-lines:]
             return ''.join(line.decode('utf-8') for line in lines_content)
         except Exception as e:
