@@ -18,7 +18,6 @@
   • Путь к стартовому скрипту.
   
 Лог-файл имеет формат csv и содержит все действия во время последнего сеанса работы с эмулятором. Для каждого действия указаны дата и время. Для каждого действия указан пользователь.
-Стартовый скрипт служит для начального выполнения заданного списка команд из файла.
 
 #### Необходимо поддержать в эмуляторе команды ls, cd и exit, а также следующие команды:
 
@@ -32,19 +31,56 @@
 ![image](https://github.com/user-attachments/assets/96b011c6-efdb-4d61-86eb-d6bcbbfd85dc)
 
 ## Тестирование функций 
-![image](https://github.com/user-attachments/assets/e333c3b1-ed96-456f-ad42-3c5cccc5eaf6)
+![image](https://github.com/user-attachments/assets/199189e8-6f07-4195-9aa1-c4b781cbd7e9)
 
-![image](https://github.com/user-attachments/assets/e53012a8-541c-4b02-aa33-72b4aff490cd)
+![image](https://github.com/user-attachments/assets/92923867-9049-478c-b00a-32931b580bfd)
 
-![image](https://github.com/user-attachments/assets/eca5ab23-09cb-4b77-9109-5332391dc256)
+![image](https://github.com/user-attachments/assets/59ea2ed8-4910-44cf-9c47-33ccec5f14ec)
 
-![image](https://github.com/user-attachments/assets/8d678adf-7e53-4773-9e13-4358cb3860d4)
+![image](https://github.com/user-attachments/assets/e92d0d6a-3785-428c-ab5c-247f8aad7805)
 
-![image](https://github.com/user-attachments/assets/6ed3792e-a877-474a-b5af-0434f6f1f454)
+![image](https://github.com/user-attachments/assets/d077061a-e614-4dc3-864c-bd002a439ab0)
 
-![image](https://github.com/user-attachments/assets/ad93e01b-c085-4b41-b97e-c5f63d947a81)
+![image](https://github.com/user-attachments/assets/653feb66-336e-486e-a4d4-b02fc6a5d8e4)
 
-![image](https://github.com/user-attachments/assets/8e08bb81-f339-4267-84ef-1cdd41e4c84b)
+![image](https://github.com/user-attachments/assets/95f0c57d-c54a-420a-9891-6e3116ca881f)
+
+![image](https://github.com/user-attachments/assets/06f9a66d-e9de-44bb-b128-a06b89812948)
+
+![image](https://github.com/user-attachments/assets/38d18fc1-712a-4b96-9bca-0994058841c2)
+
+## Функция ls
+### Действия:
+
+1. Выводит список файлов и директорий в текущей директории.
+2. Если указан аргумент -l, добавляет права доступа и размеры файлов.
+
+## Функция cd
+### Действия:
+
+1. Обрабатывает переходы на уровень выше и переходы в корень. 
+
+## Функция exit
+### Действия:
+
+1. Завершает выполнение программы.
+
+## Функция mkdir
+### Действия:
+
+1. Проверяет, существует ли директория с таким именем.
+2. Если директория не существует, создает ее в ZIP-архиве.
+
+## Функция tail
+### Действия:
+
+1. Читает содержимое файла и выводит указанные строки с конца.
+
+
+## Функция find
+### Действия:
+
+1. Ищет совпадения в именах файлов и папок внутри ZIP-архива.
 
 <div id="header" align="center">
   <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2h0anFyeHZyaHI1anljYWdkYjl3cG56Z3UxNGhzZDhocnZwZHZ6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YITvqkRzjBb2KRklUw/giphy-downsized-large.gif" width="200"/>
