@@ -1,14 +1,20 @@
+import zipfile
 import os
-import shutil
-import getpass
 import stat
+from tempfile import TemporaryDirectory
+
 
 class ShellEmulator:
-    def __init__(self, vfs_path):
-        self.cwd = vfs_path
-        self.username = getpass.getuser()
-        self.base_dir = os.path.abspath(vfs_path)
-        self.cwd = self.base_dir
+    def __init__(self, zip_path):
+        self.zip_path = zip_path
+        self.temp_dir = TemporaryDirectory()  # Временная директория для работы
+        self.cwd = "/"  # Корень виртуальной файловой системы
+        self.archive = zipfile.ZipFile(zip_path, 'a')  # Открытие ZIP-архива
+
+    def __del__(self):
+        # Закрываем архив и удаляем временную директорию
+        self.archive.close()
+        self.temp_dir.cleanup()
 
     def run_command(self, command):
         parts = command.split()
@@ -18,7 +24,7 @@ class ShellEmulator:
         if cmd == "ls":
             return self.ls(args)
         elif cmd == "cd":
-            return self.cd(args[0] if args else "")
+            return self.cd(args[0] if args else "/")
         elif cmd == "exit":
             return self.exit()
         elif cmd == "mkdir":
@@ -32,95 +38,124 @@ class ShellEmulator:
 
     def ls(self, args):
         detailed = "-l" in args
-        entries = os.listdir(self.cwd)
+        entries = self.archive.namelist()
+
+        dirs = set()  # Уникальные директории
+        files = set()
+
+        # Разделяем директории и файлы
+        for entry in entries:
+            if entry.startswith(self.cwd.strip("/")):
+                rel_path = entry[len(self.cwd.strip("/")):].strip("/")
+                if "/" in rel_path:  # Это директория
+                    dirs.add(rel_path.split("/")[0])
+                elif rel_path:  # Это файл
+                    files.add(rel_path)
+
         if detailed:
             result = []
-            for entry in entries:
-                full_path = os.path.join(self.cwd, entry)
-                permissions = stat.filemode(os.stat(full_path).st_mode)
-                size = os.path.getsize(full_path)
-                result.append(f"{permissions} {size} {entry}")
+            for entry in sorted(dirs | files):  # Перебираем директории и файлы
+                if entry in dirs:
+                    result.append(f"drwxr-xr-x 0 {entry}")
+                else:
+                    # Получаем информацию о файле
+                    info = next((i for i in self.archive.infolist() if i.filename == f"{self.cwd.strip('/')}/{entry}"),
+                                None)
+                    size = info.file_size if info else 0
+                    result.append(f"-rw-r--r-- {size} {entry}")
             return "\n".join(result)
         else:
-            return "\n".join(entries)
+            return "\n".join(sorted(dirs | files))
 
     def cd(self, path):
         if not path:
-            path = self.base_dir
+            path = "/"  # Если путь пустой, возвращаемся в корень
 
-        new_path = os.path.abspath(os.path.join(self.cwd, path))
-        if not new_path.startswith(self.base_dir):
-            return "Error: out of range directory"
+        # Обрабатываем команду 'cd ..'
+        if path == "..":
+            # Если мы уже в корне, не можем подняться выше
+            if self.cwd == "/":
+                return "Already at root directory"
 
-        if os.path.isdir(new_path):
-            self.cwd = new_path
+            # Разделяем текущий путь по слешам и убираем последний элемент (переходим на уровень выше)
+            new_path = '/'.join(self.cwd.strip('/').split('/')[:-1])
+            if new_path == "":
+                new_path = "/"  # Если путь пустой, значит, мы вернулись в корень
+            self.cwd = "/" + new_path.lstrip("/")  # Обновляем текущий путь
+            return ""
+
+        # Нормализуем путь относительно текущего каталога
+        new_path = os.path.normpath(os.path.join(self.cwd.strip("/"), path)).replace("\\", "/")
+
+        # Проверяем, существует ли каталог в архиве
+        entries = self.archive.namelist()
+        matched_dirs = [entry for entry in entries if entry.startswith(new_path + "/")]
+
+        if matched_dirs:
+            # Убедимся, что путь всегда начинается с одного слэша
+            self.cwd = "/" + new_path.lstrip("/")  # Обновляем текущий путь
             return ""
         else:
             return f"No such directory: {path}"
 
-    def exit(self):
-        return "Exiting shell..."
-
     def mkdir(self, path):
-        try:
-            os.makedirs(os.path.join(self.cwd, path), exist_ok=True)
-            return f"Directory '{path}' created"
-        except Exception as e:
-            return f"Error: {str(e)}"
+        # Убираем лишние символы `/` в начале и конце пути
+        directory = os.path.normpath(os.path.join(self.cwd.strip("/"), path)).strip("/") + "/"
+
+        # Проверяем, существует ли уже такая директория
+        if any(entry == directory or entry.startswith(directory) for entry in self.archive.namelist()):
+            return f"Directory '{path}' already exists"
+
+        # Добавляем директорию в архив
+        self.archive.writestr(directory, "")
+        return f"Directory '{path}' created"
 
     def find(self, args):
         if not args:
             return "Error: find command requires a search term"
 
         search_term = args[0]
-        matches = []
-        for root, dirs, files in os.walk(self.cwd):
-            for name in files + dirs:
-                if search_term in name:
-                    matches.append(os.path.relpath(os.path.join(root, name), self.base_dir))
-
-        if matches:
-            return "\n".join(matches)
-        else:
-            return f"No files or directories found matching '{search_term}'"
+        matches = [entry for entry in self.archive.namelist() if search_term in entry]
+        return "\n".join(matches) if matches else f"No files or directories found matching '{search_term}'"
 
     def tail(self, path, lines=5):
+        # Формируем полный путь к файлу относительно текущего каталога
+        file_path = os.path.normpath(os.path.join(self.cwd.strip("/"), path)).strip("/")
+
+        # Проверяем, существует ли файл в архиве
+        if file_path not in self.archive.namelist():
+            return f"No such file: {path}"
+
+        # Читаем последние строки из файла
         try:
-            file_path = os.path.join(self.cwd, path)
-            with open(file_path, 'r') as f:
+            with self.archive.open(file_path) as f:
+                # Читаем весь файл, а затем берем последние `lines` строк
                 lines_content = f.readlines()[-lines:]
-            return ''.join(lines_content)
+            return ''.join(line.decode('utf-8') for line in lines_content)
         except Exception as e:
             return f"Error: {str(e)}"
 
+    def exit(self):
+        return "Exiting shell..."
+
     def get_current_path(self):
-        # Преобразуем путь в Unix-формат
-        relative_path = os.path.relpath(self.cwd, self.base_dir)
-        if relative_path == ".":
-            relative_path = "/"  # Если текущий путь - корень, показываем "/"
-        else:
-            relative_path = "/" + relative_path.replace("\\", "/")
-        return relative_path
+        return self.cwd
 
 
 # Основной цикл эмулятора командной строки
 if __name__ == "__main__":
-    vfs_path = "vfs"  # Путь к вашей виртуальной файловой системе
-    emulator = ShellEmulator(vfs_path)  # Инициализация эмулятора
+    zip_path = "vfs.zip"  # ZIP-архив
+    emulator = ShellEmulator(zip_path)  # Инициализация эмулятора
 
     while True:
-        # Отображаем текущий путь с учетом изменений
         current_path = emulator.get_current_path()
         print(f"vfs{current_path} $ ", end="")
 
-        # Чтение команды от пользователя
         command = input().strip()
 
-        # Выход из эмулятора
         if command == "exit":
             print(emulator.run_command(command))
             break
 
-        # Выполнение команды
         output = emulator.run_command(command)
         print(output)
