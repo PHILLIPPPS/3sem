@@ -29,7 +29,7 @@
 Все функции эмулятора должны быть покрыты тестами, а для каждой из поддерживаемых команд необходимо написать 2 теста.
 
 ## Успешное выполнение тестов
-![image](https://github.com/user-attachments/assets/045d3f50-b0ae-4f9e-b79c-d2914a6e11a1)
+![image](https://github.com/user-attachments/assets/96b011c6-efdb-4d61-86eb-d6bcbbfd85dc)
 
 ## Тестирование функций 
 ![image](https://github.com/user-attachments/assets/e333c3b1-ed96-456f-ad42-3c5cccc5eaf6)
