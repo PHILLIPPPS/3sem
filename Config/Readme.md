@@ -82,6 +82,12 @@
 
 1. Ищет совпадения в именах файлов и папок внутри ZIP-архива.
 
+## Доп задание
+### Покрасить директории в бирюзовый, txt файлы в красный, а csv файлы в зеленый
+
+![изображение](https://github.com/user-attachments/assets/3980fa55-9bab-4bfa-b5d9-732f66541749)
+
+
 <div id="header" align="center">
   <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2h0anFyeHZyaHI1anljYWdkYjl3cG56Z3UxNGhzZDhocnZwZHZ6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YITvqkRzjBb2KRklUw/giphy-downsized-large.gif" width="200"/>
 </div>
