@@ -4,6 +4,7 @@ import zipfile
 from tempfile import TemporaryDirectory
 from shell_emulator import ShellEmulator  # Импортируем эмулятор
 
+
 class TestShellEmulator(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -15,6 +16,9 @@ class TestShellEmulator(unittest.TestCase):
             archive.writestr('file1.txt', 'Hello, world!')
             archive.writestr('dir1/file2.txt', 'Sample content')
 
+        cls.log_file = os.path.join(cls.temp_zip.name, "log.csv")
+        cls.user = "test_user"
+
     @classmethod
     def tearDownClass(cls):
         """Удаляем временный ZIP-архив"""
@@ -22,7 +26,7 @@ class TestShellEmulator(unittest.TestCase):
 
     def setUp(self):
         """Создаем новый экземпляр эмулятора для каждого теста"""
-        self.emulator = ShellEmulator(self.zip_path)
+        self.emulator = ShellEmulator(self.zip_path, self.log_file, self.user)
 
     def tearDown(self):
         """Удаляем эмулятор после каждого теста"""
