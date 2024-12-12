@@ -57,3 +57,7 @@
 ### Выполнение тестов
 
 ![image](https://github.com/user-attachments/assets/644eb24b-14af-451e-a80a-d88573d30921)
+
+### Тестирование
+
+![image](https://github.com/user-attachments/assets/4f497b38-0a87-4e27-af17-4e0cfce5edf3)
