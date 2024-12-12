@@ -53,3 +53,7 @@
 4. Деление.
 
 5. len().
+
+### Выполнение тестов
+
+![image](https://github.com/user-attachments/assets/644eb24b-14af-451e-a80a-d88573d30921)
