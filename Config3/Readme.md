@@ -63,6 +63,6 @@
 ![image](https://github.com/user-attachments/assets/4f497b38-0a87-4e27-af17-4e0cfce5edf3)
 
 <div id="header" align="center">
-  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2h0anFyeHZyaHI1anljYWdkYjl3cG56Z3UxNGhzZDhocnZwZHZ6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YITvqkRzjBb2KRklUw/giphy-downsized-large.gif" width="200"/>
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXJjYjkwbmc1bHBleTA1enMwcnVkcjMxY2x5Nmx2dDRteXNweDU3ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rzA94T56LYiiKpk5zz/giphy-downsized-large.gif" width="200"/>
 </div>
 
