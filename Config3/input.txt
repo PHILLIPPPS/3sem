@@ -1,0 +1,28 @@
+% Это однострочный комментарий
+
+name : 'Alice'
+age : 25
+
+skills : <<'Python', 'C++', 'Bash'>>
+empty_array : <<>>
+
+nested_array : <<1, <<2, 3>>, 4>>
+
+simple_expression : ?[3 + 4]
+
+expression_with_var : ?[age + 5]
+
+array_length : ?[len skills]
+
+mixed_array : <<42, 'answer', 3,14>>
+
+(comment
+Это многострочный комментарий.
+Он может занимать несколько строк.
+)
+
+dictionary : [
+    key1['value1']
+    key2['value2']
+    key3['value3']
+]
