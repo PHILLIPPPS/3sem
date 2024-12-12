@@ -61,3 +61,6 @@
 ### Тестирование
 
 ![image](https://github.com/user-attachments/assets/4f497b38-0a87-4e27-af17-4e0cfce5edf3)
+
+https://github.com/user-attachments/assets/66c10193-24bd-4c87-8e74-ea9cfc0f815a
+
