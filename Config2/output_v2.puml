@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+"bf48433c942a8bb716240b6107879d1cccc78173" : commit
+"4b2cb95eae5e10ec380e383cf75608402cc5cb78" : file/folder
+"bf48433c942a8bb716240b6107879d1cccc78173" --> "4b2cb95eae5e10ec380e383cf75608402cc5cb78" : modifies
+"8d04818826a7cb74d3142176a1c7634305eafffd" : file/folder
+"bf48433c942a8bb716240b6107879d1cccc78173" --> "8d04818826a7cb74d3142176a1c7634305eafffd" : modifies
+"file1.txt" : file/folder
+"bf48433c942a8bb716240b6107879d1cccc78173" --> "file1.txt" : modifies
+"6a4caf75e85426daffa1961633b43416028543cf" : file/folder
+"8d04818826a7cb74d3142176a1c7634305eafffd" --> "6a4caf75e85426daffa1961633b43416028543cf" : modifies
+"1cbfdf670cede85b50c5fa1fbf06181f142a6f31" : file/folder
+"8d04818826a7cb74d3142176a1c7634305eafffd" --> "1cbfdf670cede85b50c5fa1fbf06181f142a6f31" : modifies
+"file2.txt" : file/folder
+"8d04818826a7cb74d3142176a1c7634305eafffd" --> "file2.txt" : modifies
+"49211fcc1919483d1aa00bd537d0512f749b855a" : file/folder
+"1cbfdf670cede85b50c5fa1fbf06181f142a6f31" --> "49211fcc1919483d1aa00bd537d0512f749b855a" : modifies
+"1cbfdf670cede85b50c5fa1fbf06181f142a6f31" --> "file1.txt" : modifies
+@enduml
