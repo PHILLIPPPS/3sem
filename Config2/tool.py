@@ -127,6 +127,7 @@ def group_files_in_packages(graph):
     for line in graph:
         if " --> " in line:
             commit, file_path = line.split(" --> ")
+            file_path = file_path.split(" :")[0]  # Убираем часть после :
             folder, file = os.path.split(file_path.strip('"'))
             folder = folder.strip()  # Убираем лишние пробелы
             if folder:  # Пропускаем пустые папки
@@ -139,14 +140,13 @@ def group_files_in_packages(graph):
     for folder, files in grouped.items():
         plantuml_code.append(f'package "{folder}" {{')
         for file in files:
-            plantuml_code.append(f'"{folder}/{file}" : file')
+            plantuml_code.append(f'"{folder}/{file}" : file')  # Корректное форматирование
         plantuml_code.append("}")
 
-    # Добавляем исходные связи без времени
+    # Добавляем исходные связи
     plantuml_code.extend(graph)
     plantuml_code.append("@enduml")
     return "\n".join(plantuml_code)
-
 
 def generate_plantuml_code(graph):
     """Генерирует код PlantUML для графа."""
